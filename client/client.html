@@ -6,6 +6,37 @@
   
   <script>
 
+
+    const sendFetchRequest = async () =>{
+      const url = document.querySelector('#page').value;
+      let type = document.querySelector('#type').value;
+
+      const options = {
+        method:'GET',
+        headers: {'Accept':type}
+      }
+      
+      const fetchPromise = fetch(url, options);
+
+      fetchPromise.then((response) =>{ handleResponse(response)});
+    };
+
+    const init = () =>{
+      const submitButton = document.querySelector('#send');
+      const dataTypeSelector = document.querySelector('#type');
+      const pageSelector = document.querySelector('#page');
+
+      const url = ''
+      let contentType = 'application/json';
+
+      submitButton.onclick = (e) =>{
+        e.preventDefault();
+        sendFetchRequest();
+        return false;
+      }
+    };
+
+    window.onload = init;
   </script>
 </head>
 <body>
