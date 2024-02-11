@@ -6,12 +6,63 @@
   
   <script>
 
+    const handleResponse = (response) =>{
+
+
+      response.text().then((responseText) =>{
+        let content = document.querySelector('#content');
+        // console.log(response);
+
+        let contentType = response.headers.get('Content-Type');
+
+        
+        switch(response.status){
+          case 200:
+            content.innerHTML = `<b>Success</b>`
+            break;
+          case 400: 
+            content.innerHTML = `<b>Bad Request</b>`;
+            break;
+          case 401: 
+            content.innerHTML = `<b>Unauthorized</b>`;
+            break;
+          case 403: 
+            content.innerHTML = `<b>Forbidden</b>`;
+            break;  
+          case 500:
+            content.innerHTML = `<b>Internal Server Error</b>`;
+            break;
+          case 501: 
+            content.innerHTML = `<b>Not Implemented</b>`;
+            break;
+          default:
+            content.innerHTML = `<b>Resource Not Found<b>`;
+            break;
+        }
+        let htmlMessage = document.createElement('p');
+        content.appendChild(htmlMessage);
+        let parsedResponse = '';
+        if(contentType == 'application/json'){
+          parsedResponse = JSON.parse(responseText);
+          console.log(parsedResponse);
+          parsedResponse = parsedResponse.message;
+        }else if(contentType=='text/xml'){
+          console.log(responseText);
+          parsedResponse = new window.DOMParser().parseFromString(responseText, 'text/xml');
+          let parsedMessage = parsedResponse.querySelector('message');
+          // console.log(parsedResponse);
+          parsedResponse = parsedMessage.innerHTML;
+        }
+        htmlMessage.innerHTML = `Message: ${parsedResponse}`;
+      });
+    };
+
 
     const sendFetchRequest = async () =>{
-      const url = document.querySelector('#page').value;
+      let url = document.querySelector('#page').value;
       let type = document.querySelector('#type').value;
-
-      const options = {
+      console.log(type);
+      let options = {
         method:'GET',
         headers: {'Accept':type}
       }
@@ -22,11 +73,11 @@
     };
 
     const init = () =>{
-      const submitButton = document.querySelector('#send');
-      const dataTypeSelector = document.querySelector('#type');
-      const pageSelector = document.querySelector('#page');
+      let submitButton = document.querySelector('#send');
+      let dataTypeSelector = document.querySelector('#type');
+      let pageSelector = document.querySelector('#page');
 
-      const url = ''
+      let url = ''
       let contentType = 'application/json';
 
       submitButton.onclick = (e) =>{
