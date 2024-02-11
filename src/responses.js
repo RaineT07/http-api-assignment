@@ -99,11 +99,11 @@ const getUnauthorized = (request, response, acceptedTypes, param) => {
     responseXML += `<message>${responseObj.message}</message>`;
     responseXML += `<id>${responseObj.id}</id>`;
     responseXML += '</response>';
-    return respond(request, response, 401, responseXML, 'text/xml');
+    return respond(request, response, status, responseXML, 'text/xml');
   }
 
   const responseStr = JSON.stringify(responseObj);
-  return respond(request, response, 401, responseStr, 'application/json');
+  return respond(request, response, status, responseStr, 'application/json');
 };
 
 const getForbidden = (request, response, acceptedTypes) => {
